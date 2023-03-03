@@ -1,0 +1,16 @@
+Pokémon deck requirements/suggestions
+
+Requirements:
+• Deck must contain exactly 60 cards
+• At least one basic Pokémon 
+• Up to 4 cards with the same name (Excluding energy but including Special Energy) “Only 4 Pikachus”
+	4 pokemon rule does not apply to Pokémon that have special variants (Vmax, Radiant, EX)
+•
+
+Suggestions:
+• Around 15-20 Pokémon cards
+• Around 25-30 Trainer cards
+	Of these trainer cards around 10 should be ‘Supporter’ cards
+	Healthy mix of Item, Tool and Stadium cards
+• Around 5-10 Energy cards
+
