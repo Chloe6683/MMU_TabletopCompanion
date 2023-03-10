@@ -1,0 +1,28 @@
+{
+  "name": "pokemon-api-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node database.refresh.js && mocha ./tests/test.*.js --reporter spec --log-level=warn --timeout 10000",
+    "dev": "nodemon server.js",
+    "db-init": "node database.js && node database.refresh.js -cards",
+    "db-reset": "node database.refresh.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.8.3",
+    "mocha": "^10.2.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.21",
+    "pokemontcgsdk": "^2.0.0",
+    "sqlite3": "^5.1.4"
+  }
+}
