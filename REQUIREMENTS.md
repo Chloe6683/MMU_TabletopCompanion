@@ -1,7 +1,7 @@
 # Prospective Users
 
-- Pokemon TCG Players
-  - New players building a first deck
+- [x] Pokemon TCG Players
+  - [ ] New players building a first deck
   - Players wanting to build a competitive deck
 
 # Potential Stakeholders
