@@ -1,0 +1,42 @@
+[
+    {
+        "test_description": "Test blank username",
+        "username": "",
+        "password": "@Password123!"
+    },
+    {
+        "test_description": "Test blank password",
+        "username": "TestNameBad1",
+        "password": ""
+    },
+    {
+        "test_description": "Test password too short",
+        "username": "TestNameBad2",
+        "password": "@Short1"
+    },
+    {
+        "test_description": "Test password too long",
+        "username": "TestNameBad3",
+        "password": "@tooLoooooooooooooooooooooooooooooong1"
+    },
+    {
+        "test_description": "Test password without numbers",
+        "username": "TestNameBad4",
+        "password": "@noNumbers"
+    },
+    {
+        "test_description": "Test password without special character",
+        "username": "TestNameBad5",
+        "password": "noSpecial1"
+    },
+    {
+        "test_description": "Test password without uppercase character",
+        "username": "TestNameBad6",
+        "password": "@nouppercase1"
+    },
+    {
+        "test_description": "Test password without lowercase character",
+        "username": "TestNameBad7",
+        "password": "@NOLOWERCASE1"
+    }
+]
