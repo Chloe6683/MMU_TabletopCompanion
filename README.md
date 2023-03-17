@@ -9,6 +9,7 @@ Create a .env file in the root directory, including the variables:
   - SERVER_ADDRESS
   - ADMIN_USERNAME
   - ADMIN_PASSWORD
+  - HTTP_PORT
  
 Run:
 ```
