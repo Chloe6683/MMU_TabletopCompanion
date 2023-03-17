@@ -4,8 +4,8 @@ A team project based on the Tabletop Game Companion spec for MMU Software Engine
 [Week 3 Lab - Requirements Analysis](REQUIREMENTS.md)
 
 Setup:
-Create a .env file in thr root directory, including the variables:
-  - API_KEY
+Create a .env file in the root directory, including the variables:
+  - POKEMON_API_KEY
   - SERVER_ADDRESS
   - ADMIN_USERNAME
   - ADMIN_PASSWORD
