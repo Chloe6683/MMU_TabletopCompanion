@@ -1,102 +1,88 @@
 const cards = require('../models/cards.models');
 
 const searchForCards = (req, res) => {
-    let filters = [];
-    console.log(req);
+    let filters = {};
+    let nestedFilters = {};
+    let flags = {};
 
     if(req.body.hasOwnProperty("name")){
-        let name = "name:"
-        name += req.body.name;
-        filters.push(name);
+        filters["name"] = req.body.name;
     }else{
-        filters.push("name:*")
+        filters["name"] = '%';
     }
 
-    if(req.body.hasOwnProperty("subtypes")){
-        let subtypes = "(";
-        req.body.subtypes.forEach(element => {
-            subtypes += "subtypes:";
-            subtypes += element;
-
-            subtypes += " AND ";
-            //subtypes += " OR ";
-        });
-
-        subtypes = subtypes.slice(0, -5);
-        //subtypes = subtypes.slice(0, -4);
-        subtypes += ")";
-        filters.push(subtypes);
-    }
-    if(req.body.hasOwnProperty("negatedSubtypes")){
-        let negatedSubtypes = "(";
-        req.body.negatedSubtypes.forEach(element => {
-            negatedSubtypes += "-subtypes:";
-            negatedSubtypes += element;
-
-            negatedSubtypes += " AND ";
-            //subtypes += " OR ";
-        });
-
-        negatedSubtypes = negatedSubtypes.slice(0, -5);
-        //negatedSubtypes = negatedSubtypes.slice(0, -4);
-        negatedSubtypes += ")";
-        filters.push(negatedSubtypes);
+    if(req.body.hasOwnProperty("supertype")){
+        filters["supertype"] = req.body.supertype;
     }
 
     if(req.body.hasOwnProperty("types")){
-        let types = "(";
+        let types = [];
         req.body.types.forEach(element => {
-            types += "types:";
-            types += element;
-
-            //types += " AND ";
-            types += " OR ";
+            types.push(element);
         });
-
-        //types = types.slice(0, -5);
-        types = types.slice(0, -4);
-        types += ")";
-        filters.push(types);
+        nestedFilters.types = types;
     }
+    if(req.body.hasOwnProperty("typesExclusive")){
+        flags.typesExclusive = req.body.typesExclusive
+    }else{ flags.typesExclusive = false; }
+
+
     if(req.body.hasOwnProperty("negatedTypes")){
-        let negatedTypes = "(";
+        let negatedTypes = [];
         req.body.negatedTypes.forEach(element => {
-            negatedTypes += "-types:";
-            negatedTypes += element;
-
-            negatedTypes += " AND ";
-            //types += " OR ";
+            negatedTypes.push(element);
         });
-
-        negatedTypes = negatedTypes.slice(0, -5);
-        //negatedTypes = negatedTypes.slice(0, -4);
-        negatedTypes += ")";
-        filters.push(negatedTypes);
+        nestedFilters.negatedTypes = negatedTypes;
     }
+    if(req.body.hasOwnProperty("negatedTypesExclusive")){
+        flags.negatedTypesExclusive = req.body.negatedTypesExclusive
+    }else{ flags.negatedTypesExclusive = false; }
+
+    if(req.body.hasOwnProperty("subtypes")){
+        let subtypes = [];
+        req.body.subtypes.forEach(element => {
+            subtypes.push(element);
+        });
+        nestedFilters.subtypes = subtypes;
+    }
+    if(req.body.hasOwnProperty("subtypesExclusive")){
+        flags.subtypesExclusive = req.body.subtypesExclusive
+    }else{ flags.subtypesExclusive = false; }
+
+    if(req.body.hasOwnProperty("negatedSubtypes")){
+        let negatedSubtypes = [];
+        req.body.negatedSubtypes.forEach(element => {
+            negatedSubtypes.push(element);
+        });
+        nestedFilters.negatedSubtypes = negatedSubtypes;
+    }
+    if(req.body.hasOwnProperty("negatedSubtypesExclusive")){
+        flags.negatedSubtypesExclusive = req.body.negatedSubtypesExclusive
+    }else{ flags.negatedSubtypesExclusive = false; }
 
     if(req.body.hasOwnProperty("legality")){
-        let legality = "legalities.";
-        legality += req.body.legality;
-        legality += ":legal";
-        filters.push(legality);
+        nestedFilters["legality"] = {
+            name: req.body.legality.name,
+            level: req.body.legality.level
+        }
     }
+
 
     let page = 1;
     if(req.body.hasOwnProperty("page")){
         page = req.body.page;
     }
+    filters.page = page;
 
-    console.log(filters)
-    console.log("Page: " + page);
-
-    cards.searchForCards(filters, page, (err, result) => {
+    cards.searchForCards(filters, nestedFilters, flags, (err, results, resultCount) => {
         if(err){
             console.log(err);
         }else{
-            console.log(result.length + " Results")
+            //console.log(results);
+            console.log(results.length + " of " + resultCount + " Results")
         }
         
-        return res.send(result);
+        return res.send(results);
     });
 }
 

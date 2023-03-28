@@ -12,7 +12,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
     }else{
         console.log('Connected to SQLite database...');
 
-        db.run(`CREATE TABLE users (
+        db.run(`CREATE TABLE IF NOT EXISTS Users (
                     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username text UNIQUE,
                     password text,
@@ -21,8 +21,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                     session_token text
                 )`,
             (err) => {
-                if(err) console.log("Users table already created");
-                else console.log("Users table created");
+                if(err) console.log("Failed to make Users table");
 
                 const getHash = function(password, salt){
                     return crypto.pbkdf2Sync(password, salt, 100000, 256, 'sha256').toString('hex');
@@ -38,7 +37,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             }
         );
 
-        db.run(`CREATE TABLE decks (
+        db.run(`CREATE TABLE IF NOT EXISTS Decks (
                     deck_id INTEGER PRIMARY KEY AUTOINCREMENT,
                     deck_name text,
                     card_ids text,
@@ -48,22 +47,12 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                     FOREIGN KEY(created_by_id) references users(user_id)
                 )`,
             (err) => {
-                if(err) console.log("Decks table already created");
-                else console.log("Decks table created");
+                if(err) console.log("Failed to make Decks table");
             }
         );
-
-        //Local copy of card list used to reduce queries when loading decks
-        db.run(`CREATE TABLE cards (
-                    card_id text UNIQUE,
-                    card_info text
-                )`,
-            (err) => {
-                if(err) console.log("Cards table already created")
-                else console.log("Cards table created")
-            }
-        ); 
     }
+
+    console.log("Users & Decks tables initialised");
 });
 
 module.exports = db;
