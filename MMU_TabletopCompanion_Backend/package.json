@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node database.refresh.js && mocha ./tests/test.*.js --reporter spec --log-level=warn --timeout 10000",
     "dev": "nodemon server.js",
-    "db-init": "node database.js && node database.refresh.js -cards",
+    "db-init": "node database.js && node database.cards.js && node database.refresh.js -cards",
     "db-reset": "node database.refresh.js"
   },
   "author": "",
