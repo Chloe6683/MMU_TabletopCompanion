@@ -10,4 +10,7 @@ module.exports = function(app){
         .get(decks.getOneDeck)
         .patch(auth.isAuthenticated, decks.updateDeck)
         .delete(auth.isAuthenticated, decks.deleteDeck);
+
+        app.route("/decks/validate")
+        .post(decks.validateDeck)
 }
