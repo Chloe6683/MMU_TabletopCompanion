@@ -110,11 +110,32 @@ const deleteDeck = (req, res) => {
     });
 }
 
+const validateDeck = (req, res) => {
+    console.log("ValidateDeck Controller ran");
+
+            const schema = Joi.object({
+                'card_ids': Joi.array().length(60).required(),
+            });
+
+            const { error } = schema.validate(req.body);
+            if(error) return res.status(400).send(error.details[0].message);
+ 
+            console.log(JSON.stringify(req.body.card_ids));
+            decks.validateDeck(req.body.card_ids, (err, id) => {
+        
+                if(err === 400) return res.sendStatus(400);
+                if(err) return res.sendStatus(500);
+                return res.sendStatus(200);
+        });
+
+}
+
 module.exports = {
     getAllDecks: getAllDecks,
     addNewDeck: addNewDeck,
     getOneDeck: getOneDeck,
     updateDeck: updateDeck,
-    deleteDeck: deleteDeck
+    deleteDeck: deleteDeck,
+    validateDeck: validateDeck
 }
 
