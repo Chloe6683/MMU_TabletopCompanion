@@ -1,4 +1,5 @@
 const db = require('../../database');
+const cards = require('../models/cards.models');
 
 const getAllDecks = (done) => {
     const results = [];
@@ -72,10 +73,44 @@ const deleteDeck = (id, done) => {
     });
 }
 
+const validateDeck = (card_ids, done) => {
+    const cardArray = JSON.parse(JSON.stringify(card_ids));
+    var cardCheckArray = {};
+    var cardDetails = {};
+    var i = 0;
+    //console.log(cardArray);
+    //For each card_id in cardArray, The for loop checks for the existance of an object with the name of the card_id. If no such object is found then
+    //  an object in cardCheckArray is created with the name of the object as the card id and assigns the object the value of 1.
+    //  if an object is found with the name of the card_id then the integer assigned to th object is iterated by 1.
+    for (var x in cardArray){ 
+        cards.getCardByID(cardArray[x], (err, result) => {
+            //console.log("Card Aquired: " + JSON.stringify(result));
+            i++
+            console.log(i);
+            cardDetails = JSON.parse(JSON.stringify(result));
+            //console.log("Card name found: " + cardDetails["name"]);
+            if (cardDetails["supertype"] == "Energy") {
+                //Filter out energies
+            } else if (cardCheckArray[cardDetails["name"]] === undefined) {
+                cardCheckArray[cardDetails["name"]] = 1;
+            } else if (cardCheckArray[cardDetails["name"]] == 3) {
+                i = -60;
+                return done(400);
+            } else if (i == 60) {
+                return done();
+            } else {
+                cardCheckArray[cardDetails["name"]] += 1;
+                console.log("Iterated: " + cardCheckArray[cardDetails["name"]] + " = " + cardDetails["name"] + " X:" + x);
+            }
+        })  
+    }
+}
+
 module.exports = {
     getAllDecks: getAllDecks,
     addNewDeck: addNewDeck,
     getOneDeck: getOneDeck,
     updateDeck: updateDeck,
-    deleteDeck: deleteDeck
+    deleteDeck: deleteDeck,
+    validateDeck: validateDeck
 }
